@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Hazdryx.Drawing;
+using Hazdryx.LightStitch.Utils;
 
 namespace Hazdryx.LightStitch
 {
     /// <summary>
     ///     A LightStitch scene used for manipulating dynamic lighting.
     /// </summary>
-    public class Scene
+    public class Scene : IDisposable
     {
         /// <summary>
         ///     Gets the Off image used.
@@ -48,14 +49,7 @@ namespace Hazdryx.LightStitch
             FastBitmap baked = new FastBitmap(image.Width, image.Height);
             for (int i = 0; i < baked.Length; i++)
             {
-                int c1 = Off.GetI(i);
-                int c2 = image.GetI(i);
-
-                int r = ((c2 >> 16) & 0xff) - ((c1 >> 16) & 0xff);
-                int g = ((c2 >> 8) & 0xff) - ((c1 >> 8) & 0xff);
-                int b = (c2 & 0xff) - (c1 & 0xff);
-
-                baked.SetI(i, (0xff << 24) | (r << 16) | (g << 8) | b);
+                baked.SetI(i, ColorUtil.Sub(Off.GetI(i), image.GetI(i)));
             }
 
             // Add light source.
@@ -71,6 +65,62 @@ namespace Hazdryx.LightStitch
         public LightSource GetLightSource(string name)
         {
             return LightSources[name];
+        }
+        /// <summary>
+        ///     Removes a light source by name.
+        /// </summary>
+        /// <param name="name"></param>
+        public void RemoveLightSource(string name)
+        {
+            if (LightSources.ContainsKey(name))
+            {
+                LightSource light = LightSources[name];
+                light.Dispose();
+                LightSources.Remove(name);
+            }
+        }
+
+        /// <summary>
+        ///     Creates a blank FastBitmap which can be used
+        ///     as a render target for this Scene.
+        /// </summary>
+        /// <returns></returns>
+        public FastBitmap CreateRenderTarget()
+        {
+            return new FastBitmap(Off.Width, Off.Height);
+        }
+        /// <summary>
+        ///     Renders the scene to the target.
+        /// </summary>
+        /// <param name="target"></param>
+        public void RenderTo(FastBitmap target)
+        {
+            // Validate
+            if (target.Width != Off.Width || target.Height != Off.Height)
+            {
+                throw new ArgumentException("Invalid dimensions for render target");
+            }
+
+            // Render off to target
+            Off.CopyTo(target);
+
+            // Render light sources.
+            foreach (KeyValuePair<string, LightSource> light in LightSources)
+            {
+                light.Value.RenderTo(target);
+            }
+        }
+
+        /// <summary>
+        ///     Disposes of all the light sources.
+        /// </summary>
+        public void Dispose()
+        {
+            foreach (KeyValuePair<string, LightSource> light in LightSources)
+            {
+                light.Value.Dispose();
+            }
+            LightSources.Clear();
         }
 
         /// <summary>
