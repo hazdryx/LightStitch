@@ -5,27 +5,29 @@ namespace Hazdryx.LightStitch.WinForm
     public partial class Main : Form
     {
         public Scene Scene { get; }
+        public FastBitmap RenderTarget { get; }
 
         public Main()
         {
             InitializeComponent();
-
-            this.WindowState = FormWindowState.Maximized;
-
             Scene = Scene.FromImage(FastBitmap.FromFile("./examples/off.png"));
-            LightSource left = Scene.AddLightSource("left", FastBitmap.FromFile("./examples/on.left.png"));
-            left.Color = 0xFF0000;
+            leftEditor.Source = Scene.AddLightSource("left", FastBitmap.FromFile("./examples/on.left.png"));
+            backEditor.Source = Scene.AddLightSource("back", FastBitmap.FromFile("./examples/on.back.png"));
+            rightEditor.Source = Scene.AddLightSource("right", FastBitmap.FromFile("./examples/on.right.png"));
 
-            LightSource right = Scene.AddLightSource("right", FastBitmap.FromFile("./examples/on.right.png"));
-            right.Color = 0x00FF00;
+            RenderTarget = Scene.CreateRenderTarget();
+            Scene.RenderTo(RenderTarget);
+            view.Image = RenderTarget.BaseBitmap;
 
-            LightSource back = Scene.AddLightSource("back", FastBitmap.FromFile("./examples/on.back.png"));
-            back.Color = 0x0000FF;
+            leftEditor.SourceUpdated += _SourceUpdated;
+            backEditor.SourceUpdated += _SourceUpdated;
+            rightEditor.SourceUpdated += _SourceUpdated;
+        }
 
-            FastBitmap target = Scene.CreateRenderTarget();
-            Scene.RenderTo(target);
-
-            view.Image = target.BaseBitmap;
+        private void _SourceUpdated(object? sender, EventArgs e)
+        {
+            Scene.RenderTo(RenderTarget);
+            view.Image = RenderTarget.BaseBitmap;
         }
     }
 }

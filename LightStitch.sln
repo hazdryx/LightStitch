@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStitch", "LightStitch\LightStitch.csproj", "{E9DF347C-9320-4614-B6A6-A5116936E069}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightStitch.WinForm", "LightStitch.WinForm\LightStitch.WinForm.csproj", "{8B900AA3-C877-4857-A5A6-431B58A8DE1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightStitch.WinForm", "LightStitch.WinForm\LightStitch.WinForm.csproj", "{8B900AA3-C877-4857-A5A6-431B58A8DE1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

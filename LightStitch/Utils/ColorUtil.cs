@@ -1,6 +1,6 @@
 ﻿namespace Hazdryx.LightStitch.Utils
 {
-    internal static class ColorUtil
+    public static class ColorUtil
     {
         /// <summary>
         ///     Explodes a color into it's rgb components.
