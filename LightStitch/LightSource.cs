@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 using Hazdryx.Drawing;
 using Hazdryx.LightStitch.Utils;
@@ -16,9 +15,9 @@ namespace Hazdryx.LightStitch
         /// </summary>
         public bool On { get; set; } = true;
         /// <summary>
-        ///     Gets or sets the color multiplier.
+        ///     Gets or sets the color multiplier in rgb24.
         /// </summary>
-        public Color Color { get; set; } = Color.White;
+        public int Color { get; set; } = 0xFFFFFF;
         public FastBitmap Baked { get; }
 
         internal LightSource(FastBitmap baked)
@@ -40,7 +39,7 @@ namespace Hazdryx.LightStitch
             if (!On) return;
             for (int i = 0; i < target.Length; i++)
             {
-                target.SetI(i, ColorUtil.Add(target.GetI(i), Baked.GetI(i)));
+                target.SetI(i, ColorUtil.Add(target.GetI(i), ColorUtil.Mul(Baked.GetI(i), Color)));
             }
         }
 
