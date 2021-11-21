@@ -4,7 +4,25 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>Hazdryx.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <PackageLicenseExpression>ISC</PackageLicenseExpression>
+    <PackageId>Hazdryx.LightStitch</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Christopher Bishop</Authors>
+    <Product>Hazdryx.LightStitch</Product>
+    <Description>Dynamically adjust lighting brightness and color in post.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/hazdryx/LightStitch</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>light, lighting, color, brightness, imaging, post-processing</PackageTags>
+    <PackageProjectUrl>https://github.com/hazdryx/LightStitch</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hazdryx.FastBitmap" Version="1.3.2" />
