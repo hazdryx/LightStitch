@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Hazdryx.Drawing;
-using Hazdryx.LightStitch.Utils;
 
 namespace Hazdryx.LightStitch
 {
@@ -49,7 +48,9 @@ namespace Hazdryx.LightStitch
             FastBitmap baked = new FastBitmap(image.Width, image.Height);
             for (int i = 0; i < baked.Length; i++)
             {
-                baked.SetI(i, ColorUtil.Sub(Off.GetI(i), image.GetI(i)));
+                int color = FastColor.Sub(Off.GetI(i), image.GetI(i));
+                color = FastColor.SetAlpha(color, 0xff);
+                baked.SetI(i, color);
             }
 
             // Add light source.

@@ -1,7 +1,5 @@
 ﻿using System;
-
 using Hazdryx.Drawing;
-using Hazdryx.LightStitch.Utils;
 
 namespace Hazdryx.LightStitch
 {
@@ -39,7 +37,9 @@ namespace Hazdryx.LightStitch
             if (!On) return;
             for (int i = 0; i < target.Length; i++)
             {
-                target.SetI(i, ColorUtil.Add(target.GetI(i), ColorUtil.Mul(Baked.GetI(i), Color)));
+                int color = FastColor.Add(target.GetI(i), FastColor.Mul(Baked.GetI(i), Color));
+                color = FastColor.SetAlpha(color, 0xff);
+                target.SetI(i, color);
             }
         }
 
